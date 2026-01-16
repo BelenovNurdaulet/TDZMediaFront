@@ -1,0 +1,22 @@
+.divider {
+    position: relative;
+    inset-block-start: -1px;
+    width: 100%;
+}
+
+.tabs {
+    box-sizing: border-box;
+}
+
+.grid {
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+.leftInput {
+    --textfield-border-radius:  12px 0 0 12px;
+}
+
+.rightInput{
+
+    --textfield-border-radius:   0 12px 12px 0 ;
+}

@@ -1,0 +1,47 @@
+.selectPagination {
+    --border-width-s: 0px;
+    --control-height-s: 24px;
+    --control-padding-s: 0px;
+    min-inline-size: 60px;
+    --color-content-primary: var(--color-content-action);
+    --spacing-xs: 5px;
+}
+.selectPagination :global(.FieldIcon) {
+    color: var(--color-content-action);
+}
+
+.selectPagination :global(.Select-FieldContainer) {
+    inline-size: unset !important;
+    width: auto !important;
+}
+
+.selectPagination :global(.Select-Body) {
+
+    background-color: rgba(0, 0, 0, 0);
+    justify-content: center;
+
+}
+
+:global(.DataList) {
+    min-width: 200px !important;
+    max-width: none !important;
+}
+
+.selectPagination :global(.Select-FieldControl) {
+    --textfield-color: var(--color-content-action);
+}
+
+.selectPagination:hover{
+    --color-content-primary: var(--color-content-action-hover);
+    --color-content-action: var(--color-content-action-hover);
+}
+
+.selectPagination:hover{
+    --color-content-primary: var(--color-content-action-hover);
+    --color-content-action: var(--color-content-action-hover);
+}
+
+.selectPagination:active{
+    --color-content-primary: var(--color-content-action-pressed);
+    --color-content-action: var(--color-content-action-pressed);
+}
