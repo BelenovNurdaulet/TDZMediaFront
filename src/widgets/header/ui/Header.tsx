@@ -33,10 +33,17 @@ export function Header() {
 
             >
                 <Stack direction="row" align="center" gap="m" wrap>
-                    <RouterLink to="/" style={{textDecoration: "none"}}>
-                        <Typography variant="heading-xl" color="primary">
-                            UserManager
-                        </Typography>
+                    <RouterLink to="/" style={{ textDecoration: "none" }}>
+                        <Stack direction="row" align="center" gap="s">
+                            <img
+                                src="/logo.svg"
+                                alt="Логотип"
+                                style={{ width: 32, height: 32 }}
+                            />
+                            <Typography variant="heading-xl" color="primary">
+                                UserManager
+                            </Typography>
+                        </Stack>
                     </RouterLink>
 
                     {isAuth && (
