@@ -1,145 +1,160 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useEffect, useState} from "react";
+import {useForm, Controller} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 
-import { Input } from "@ozen-ui/kit/Input";
-import { Button } from "@ozen-ui/kit/ButtonNext";
-import { Stack } from "@ozen-ui/kit/Stack";
-import { Typography } from "@ozen-ui/kit/Typography";
-import { SectionMessage } from "@ozen-ui/kit/SectionMessage";
-import { Select, Option } from "@ozen-ui/kit/Select";
+import {Input} from "@ozen-ui/kit/Input";
+import {Button} from "@ozen-ui/kit/ButtonNext";
+import {Stack} from "@ozen-ui/kit/Stack";
+import {Select, Option} from "@ozen-ui/kit/Select";
 
-import type { PublicUser, RoleCode } from "@/entities/user/userTypes";
+import type {PublicUser, RoleCode} from "@/entities/user/userTypes";
 import {
-    type UpdateProfileFormValues,
-    updateProfileSchema
+    updateProfileSchema,
 } from "@/features/user/userProfile/model/updateProfileSchema.ts";
 import {useUpdateProfile} from "@/features/user/userProfile/model/useUpdateProfile.ts";
-
+import {Grid, GridItem} from "@ozen-ui/kit/Grid";
+import {SkillAutocomplete} from "@/shared/ui/SkillAutocomplete.tsx";
 
 type Props = {
-    me: PublicUser;
+    user: PublicUser;
     canEditRole?: boolean;
 };
 
-export function UpdateProfileForm({ me, canEditRole = false }: Props) {
-    const { submit, isLoading } = useUpdateProfile({
-        userId: me.id,
-    });
+export function UpdateProfileForm({user, canEditRole = false}: Props) {
+    const {submit, isLoading} = useUpdateProfile({userId: user.id});
 
     const {
-        register,
+        control,
         handleSubmit,
         reset,
-        setValue,
-        watch,
-        formState: { errors },
-    } = useForm<UpdateProfileFormValues>({
+        formState: {errors},
+    } = useForm({
         resolver: zodResolver(updateProfileSchema),
-        defaultValues: {
-            firstName: me.firstName,
-            lastName: me.lastName ?? "",
-            surName: me.surName ?? "",
-            email: me.email,
-            skillsText: me.skills.join(", "),
-            role: me.role,
-        },
     });
-
+    const [skills, setSkills] = useState<string[]>(user.skills ?? []);
     useEffect(() => {
         reset({
-            firstName: me.firstName,
-            lastName: me.lastName ?? "",
-            surName: me.surName ?? "",
-            email: me.email,
-            skillsText: me.skills.join(", "),
-            role: me.role,
+            firstName: user.firstName ?? "",
+            lastName: user.lastName ?? "",
+            surName: user.surName ?? "",
+            email: user.email ?? "",
+            skills: user.skills ?? [],
+            role: (user.role ?? "USER") as RoleCode,
         });
-    }, [me, reset]);
-
-    // eslint-disable-next-line react-hooks/incompatible-library
-    const roleValue = watch("role") ?? "USER";
-
-    const onSubmit = async (values: UpdateProfileFormValues) => {
-        await submit({
-            firstName: values.firstName,
-            lastName: values.lastName?.trim() ? values.lastName.trim() : null,
-            surName: values.surName?.trim() ? values.surName.trim() : null,
-            email: values.email,
-            skillsText: values.skillsText,
-            role: canEditRole ? (values.role as RoleCode) : undefined,
-        });
-    };
+    }, [user, reset]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack direction="column" gap="l" fullWidth align="center">
-                <Typography variant="heading-l" align="left">
-                    Редактировать профиль
-                </Typography>
+        <form onSubmit={handleSubmit((values) => submit({ ...values, skills }))}>
 
-                <Input
-                    size="s"
-                    label="Имя"
-                    {...register("firstName")}
-                    error={!!errors.firstName}
-                    hint={errors.firstName ? errors.firstName.message : null}
-                    fullWidth
-                    required
-                />
+        <Stack direction="column" gap="s" fullWidth align="start">
+                <Grid cols={{s: 12, m: 2}} gap="l" style={{width: "100%"}}>
+                    <GridItem col={{s: 12, m: 2}}>
+                        <Controller
+                            control={control}
+                            name="firstName"
+                            render={({field}) => (
+                                <Input
+                                    size="s"
+                                    label="Имя"
+                                    value={field.value ?? ""}
+                                    onChange={field.onChange}
+                                    onBlur={field.onBlur}
+                                    error={!!errors.firstName}
+                                    hint={errors.firstName?.message ?? null}
+                                    fullWidth
+                                    required
+                                />
+                            )}
+                        />
+                    </GridItem>
+                    <GridItem col={{s: 12, m: 1}}>
+                        <Controller
+                            control={control}
+                            name="lastName"
+                            render={({field}) => (
+                                <Input
+                                    size="s"
+                                    label="Фамилия"
+                                    value={field.value ?? ""}
+                                    onChange={field.onChange}
+                                    onBlur={field.onBlur}
+                                    error={!!errors.lastName}
+                                    hint={errors.lastName?.message ? String(errors.lastName.message) : null}
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </GridItem>
+                    <GridItem col={{s: 12, m: 1}}>
+                        <Controller
+                            control={control}
+                            name="surName"
+                            render={({field}) => (
+                                <Input
+                                    size="s"
+                                    label="Отчество"
+                                    value={field.value ?? ""}
+                                    onChange={field.onChange}
+                                    onBlur={field.onBlur}
+                                    error={!!errors.surName}
+                                    hint={errors.surName?.message ? String(errors.surName.message) : null}
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </GridItem>
+                    <GridItem col={{s: 12, m: 1}}>
+                        <Controller
+                            control={control}
+                            name="email"
+                            render={({field}) => (
+                                <Input
+                                    size="s"
+                                    label="Почта"
+                                    value={field.value ?? ""}
+                                    onChange={field.onChange}
+                                    onBlur={field.onBlur}
+                                    error={!!errors.email}
+                                    hint={errors.email?.message ?? null}
+                                    fullWidth
+                                    required
+                                />
+                            )}
+                        />
+                    </GridItem>
+                    <GridItem col={{s: 12, m: 1}}>
+                        <Controller
+                            control={control}
+                            name="role"
+                            render={({field}) => (
+                                <Select
+                                    size="s"
+                                    label="Роль"
+                                    value={(field.value ?? "USER") as RoleCode}
+                                    disabled={!canEditRole}
+                                    onChange={(value) => field.onChange(value as RoleCode)}
+                                    fullWidth
+                                >
+                                    <Option value="USER">Пользователь</Option>
+                                    <Option value="ADMIN">Администратор</Option>
+                                </Select>
+                            )}
+                        />
 
-                <Input
-                    size="s"
-                    label="Фамилия"
-                    {...register("lastName")}
-                    error={!!errors.lastName}
-                    hint={errors.lastName ? String(errors.lastName.message) : null}
-                    fullWidth
-                />
-
-                <Input
-                    size="s"
-                    label="Отчество"
-                    {...register("surName")}
-                    error={!!errors.surName}
-                    hint={errors.surName ? String(errors.surName.message) : null}
-                    fullWidth
-                />
-
-                <Input
-                    size="s"
-                    label="Почта"
-                    {...register("email")}
-                    error={!!errors.email}
-                    hint={errors.email ? errors.email.message : null}
-                    fullWidth
-                    required
-                />
-
-                <Input
-                    size="s"
-                    label="Навыки (через запятую)"
-                    {...register("skillsText")}
-                    error={!!errors.skillsText}
-                    hint={errors.skillsText ? String(errors.skillsText.message) : "Например: react, ts, node"}
-                    fullWidth
-                />
-
-                <Select
-                    size="s"
-                    label="Роль"
-                    value={roleValue}
-                    disabled={!canEditRole}
-                    onChange={(value) => setValue("role", value as RoleCode)}
-                    fullWidth
-                >
-                    <Option value="USER">USER</Option>
-                    <Option value="ADMIN">ADMIN</Option>
-                </Select>
-
-                <Button type="submit" loading={isLoading} fullWidth size="s">
-                    Сохранить
-                </Button>
+                    </GridItem>
+                    <GridItem col={{s: 12, m: 2}}>
+                        <SkillAutocomplete
+                            skills={skills}
+                            setSkills={setSkills}
+                            label="Навыки"
+                        />
+                    </GridItem>
+                </Grid>
+                <div style={{display: "flex", justifyContent: "flex-end", marginTop: "auto", width: "100%"}}>
+                    <Button type="submit" loading={isLoading} size="s">
+                        Сохранить
+                    </Button>
+                </div>
             </Stack>
         </form>
     );

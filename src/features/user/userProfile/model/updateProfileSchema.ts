@@ -10,7 +10,7 @@ export const updateProfileSchema = z.object({
         .min(1, { message: "Введите почту" })
         .pipe(z.email({ message: "Неверный email" })),
 
-    skillsText: z.string().trim().optional(),
+    skills: z.array(z.string()).default([]),
 
     role: z.enum(["USER", "ADMIN"]).optional(),
 });

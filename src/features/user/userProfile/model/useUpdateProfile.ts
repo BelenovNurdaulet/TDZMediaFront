@@ -1,43 +1,26 @@
 import { useSnackbar } from "@ozen-ui/kit/Snackbar";
 import { useUpdateUserByIdMutation } from "@/entities/user/userApi";
-import type { RoleCode } from "@/entities/user/userTypes";
+import type { UpdateProfileFormValues } from "./updateProfileSchema";
 
 type Params = {
     userId: number;
     onSuccess?: () => void;
 };
 
-function normalizeSkills(text?: string) {
-    const raw = (text ?? "").trim();
-    if (!raw) return [];
-    return raw
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-}
-
 export function useUpdateProfile({ userId, onSuccess }: Params) {
     const { pushMessage } = useSnackbar();
     const [updateUser, { isLoading }] = useUpdateUserByIdMutation();
 
-    const submit = async (values: {
-        firstName: string;
-        lastName?: string | null;
-        surName?: string | null;
-        email: string;
-        skillsText?: string;
-        role?: RoleCode;
-    }) => {
-        try {
-            const data: any = {
+    const submit = async (values: UpdateProfileFormValues) => {
+          try {
+            const data = {
                 firstName: values.firstName.trim(),
-                lastName: values.lastName ? values.lastName.trim() : null,
-                surName: values.surName ? values.surName.trim() : null,
+                lastName: values.lastName?.trim() || null,
+                surName: values.surName?.trim() || null,
                 email: values.email.trim(),
-                skills: normalizeSkills(values.skillsText),
+                skills: values.skills,
+                role: values.role,
             };
-
-            if (values.role) data.role = values.role;
 
             await updateUser({ id: userId, data }).unwrap();
 
@@ -48,14 +31,12 @@ export function useUpdateProfile({ userId, onSuccess }: Params) {
             });
 
             onSuccess?.();
-            return true;
         } catch (error: any) {
             pushMessage({
                 title: "Ошибка",
                 description: String(error?.data?.error?.message ?? "Не удалось обновить профиль"),
                 status: "error",
             });
-            return false;
         }
     };
 

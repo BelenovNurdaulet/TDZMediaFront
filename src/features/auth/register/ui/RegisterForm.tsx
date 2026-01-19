@@ -17,8 +17,7 @@ import {Grid, GridItem} from "@ozen-ui/kit/Grid";
 import s from "./RegisterForm.module.css"
 import {Link} from "@ozen-ui/kit/Link";
 import  { Link as RouterLink } from "react-router-dom";
-import {Autocomplete} from "@ozen-ui/kit/AutocompleteNext";
-import {Tag} from "@ozen-ui/kit/TagNext";
+import {SkillAutocomplete} from "@/shared/ui/SkillAutocomplete.tsx";
 
 type Props = {
     onSuccess?: () => void;
@@ -38,7 +37,6 @@ export function RegisterForm({onSuccess}: Props) {
         error,
     } = useRegister({onSuccess});
     const [skills, setSkills] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState("");
     const errorText =
         error && typeof error === "object" && "status" in error
             ? `Ошибка регистрации (${String(error.status)})`
@@ -116,48 +114,7 @@ export function RegisterForm({onSuccess}: Props) {
                                 />
                             </GridItem>
                             <GridItem col={2}>
-                                <Autocomplete
-                                    limitTags={3}
-                                    searchFunction={(skills) => skills}
-                                    disableClearButton
-                                    disableShowChevron
-                                    renderTag={(props) => {
-                                        const { key: tagKey, ...rest } = props;
-                                        return (
-                                            <Tag
-                                                {...rest}
-                                                key={tagKey}
-                                                size="s"
-                                            />
-                                        );
-                                    }}
-                                    size='s'
-                                    label="Навыки"
-                                    noOptionsText="Укажите навыки через запятую"
-                                    allowCustomValue
-                                    multiple
-                                    options={skills}
-                                    value={skills}
-                                    inputValue={inputValue}
-                                    onChange={(_, newValue = []) => {
-                                        if(newValue){
-                                        const filtered = Array.from(new Set(newValue.filter(Boolean)));
-                                        setSkills(filtered);
-                                        }
-                                    }}
-                                    onInputChange={(_, value: string) => {
-                                        if (value.endsWith(',')) {
-                                            const newSkill = value.slice(0, -1).trim();
-                                            if (newSkill && !skills.includes(newSkill)) {
-                                                setSkills((prev) => [...prev, newSkill]);
-                                            }
-                                            setInputValue("");
-                                        } else {
-                                            setInputValue(value);
-                                        }
-                                    }}
-                                    fullWidth
-                                />
+                                <SkillAutocomplete skills={skills} setSkills={setSkills} />
                             </GridItem>
                         </Grid>
                     </AccordionDetails>

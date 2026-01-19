@@ -19,14 +19,15 @@ export function DeleteAccountButton({userId}: Props) {
 
     const handleConfirmDelete = async () => {
         try {
+            await onLogout();
             await deleteUser(userId).unwrap();
             pushMessage({
                 title: "Успех",
                 description: "Аккаунт удалён",
                 status: "success",
             });
-            await onLogout();
-        } catch (error: unknown) {
+
+        } catch (error: any) {
             pushMessage({
                 title: "Ошибка",
                 description: "Не удалось удалить аккаунт",
@@ -56,10 +57,8 @@ export function DeleteAccountButton({userId}: Props) {
                 </DialogHeader>
 
                 <DialogBody>
-                    Вы уверены что хотите удалить профиль ?
+                    После удаления профиля восстановление будет невозможно
                 </DialogBody>
-
-
                 <DialogFooter>
                     <Button size="s" variant="ghost" color='secondary' onClick={() => setDialogOpen(false)}>
                         Отмена
