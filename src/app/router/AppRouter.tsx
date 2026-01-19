@@ -1,12 +1,17 @@
-import {Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
-import {UsersPage} from "../../pages/users/UsersPage.tsx";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
+import { Header } from "@/widgets/header/ui/Header";
+import { UsersPage } from "@/pages/users/UsersPage";
+import { ProfilePage } from "@/pages/userProfile/ProfilePage";
+import { LoginPage } from "@/pages/auth/login/LoginPage";
+import { RegisterPage } from "@/pages/auth/register/RegisterPage";
+import { LogoutPage } from "@/pages/auth/logout/LogoutPage";
 
-import {LoginPage} from "@/pages/auth/login/LoginPage.tsx";
+
 import s from "./App.module.css";
-import {RegisterPage} from "@/pages/auth/register/RegisterPage.tsx";
-import {LogoutPage} from "@/pages/auth/logout/LogoutPage.tsx";
-import {Header} from "@/widgets/header/ui/Header.tsx";
-import {ProfilePage} from "@/pages/userProfile/ProfilePage.tsx";
+import {RedirectIfAuth} from "@/shared/ui/RedirectIfAuth.tsx";
+import {RequireAuth} from "@/shared/ui/RequireAuth.tsx";
+import {ForbiddenPage} from "@/pages/errors/forbidden/ForbiddenPage.tsx";
+import {NotFoundPage} from "@/pages/errors/notFound/NotFoundPage.tsx";
 
 export function AppRouter() {
     return (
@@ -15,15 +20,37 @@ export function AppRouter() {
                 <Header />
 
                 <Routes>
-                    <Route path="/" element={<Navigate to="/login" replace/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/users" element={<UsersPage/>}/>
-                    <Route path="/register" element={<RegisterPage/>}/>
-                    <Route path="/logout" element={<LogoutPage/>}/>
-                    <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="/" element={<Navigate to="/login" replace />} />
+
+                    <Route path="/login" element={
+                        <RedirectIfAuth>
+                            <LoginPage />
+                        </RedirectIfAuth>
+                    } />
+                    <Route path="/register" element={
+                        <RedirectIfAuth>
+                            <RegisterPage />
+                        </RedirectIfAuth>
+                    } />
+
+
+                    <Route path="/users" element={
+                        <RequireAuth>
+                            <UsersPage />
+                        </RequireAuth>
+                    } />
+                    <Route path="/profile" element={
+                        <RequireAuth>
+                            <ProfilePage />
+                        </RequireAuth>
+                    } />
+
+                    <Route path="/logout" element={<LogoutPage />} />
+
+
+                    <Route path="/403" element={<ForbiddenPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
                 </Routes>
-
-
             </div>
         </BrowserRouter>
     );
