@@ -1,0 +1,14 @@
+.page {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    max-width: 420px;
+    padding: 2.4rem;
+    background-color: var(--color-background-main);
+    border-radius: var(--border-radius-l);
+    text-align: center;
+}
