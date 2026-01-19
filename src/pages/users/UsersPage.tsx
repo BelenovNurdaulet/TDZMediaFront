@@ -1,6 +1,6 @@
 import { Card } from "@ozen-ui/kit/Card";
 import { Stack } from "@ozen-ui/kit/Stack";
-import { Typography } from "@ozen-ui/kit/Typography";
+
 import { useMemo, useState } from "react";
 import s from "./UsersPage.module.css"
 import { useGetUsersQuery } from "@/entities/user/userApi";
@@ -9,6 +9,7 @@ import { UsersFilter } from "@/features/user/usersList/ui/UsersFilter/UsersFilte
 import { UsersTable } from "@/features/user/usersList/ui/UsersTable/UserTable.tsx";
 import { UsersPagination } from "@/features/user/usersList/ui/UsersPagination/UsersPagination.tsx";
 import type { SortField } from "@/entities/user/userTypes";
+import {Title} from "@/shared/ui/Title.tsx";
 
 export function UsersPage() {
     const f = useFilter();
@@ -18,7 +19,6 @@ export function UsersPage() {
 
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-
 
     const queryParams = useMemo(
         () => ({
@@ -50,7 +50,7 @@ export function UsersPage() {
 
     return (
         <Stack direction="column" gap="m" className={s.container}>
-            <Typography variant="heading-xl">Пользователи</Typography>
+            <Title title="Список пользователей"  href="users" />
             <Card size="s" borderWidth="none">
                 <UsersFilter
                     q={f.state.q}

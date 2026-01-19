@@ -82,7 +82,7 @@ export function UsersFilter(props: Props) {
                     />
                 </GridItem>
 
-                {/* Role */}
+
                 <GridItem col={{ s: 12, m: 1 }}>
                     <Select
                         size="s"
@@ -104,7 +104,7 @@ export function UsersFilter(props: Props) {
                     <Input
                         name="ids"
                         placeholder="1,2,3"
-                        label="Посик по ID"
+                        label="Посик по IDs"
                         value={ids}
                         onChange={(e) => onIdsChange(e.target.value)}
                         size="s"
@@ -137,7 +137,6 @@ export function UsersFilter(props: Props) {
                     </Stack>
                 </GridItem>
 
-                {/* Updated */}
                 <GridItem col={{ s: 12, m: 2 }}>
                     <Stack direction="row" fullWidth>
                         <DatePicker

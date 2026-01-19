@@ -37,9 +37,9 @@ export const userApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: data,
             }),
-            invalidatesTags: (_res, _err, arg) => [
+            invalidatesTags: [
                 { type: "User", id: "LIST" },
-                { type: "User", id: arg.id },
+                { type: "User", id: "ME" },
             ],
         }),
 
