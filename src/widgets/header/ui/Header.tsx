@@ -37,7 +37,6 @@ export function Header() {
                         <Stack direction="row" align="center" gap="s">
                             <img
                                 src="/logo.svg"
-                                alt="Логотип"
                                 style={{ width: 32, height: 32 }}
                             />
                             <Typography variant="heading-xl" color="primary">
