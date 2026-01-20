@@ -18,11 +18,6 @@ export function useLogout({onSuccess}: Params) {
         try {
             await logout().unwrap();
             onSuccess?.();
-            pushMessage({
-                title: "Успех",
-                description: "Вы успешно вышли",
-                status: "success",
-            });
             dispatch(baseApi.util.resetApiState());
             navigate("/login");
 

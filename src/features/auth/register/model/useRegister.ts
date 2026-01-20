@@ -9,21 +9,11 @@ import {useSnackbar} from "@ozen-ui/kit/Snackbar";
 
 type Props = {
     onSuccess?: () => void;
+    skills?: string[];
 };
 
-function parseSkills(skillsText?: string | null): string[] | undefined {
-    const text = (skillsText ?? "").trim();
-    if (!text) return undefined;
 
-    const items = text
-        .split(",")
-        .map((x) => x.trim())
-        .filter(Boolean);
-
-    return items.length ? items : undefined;
-}
-
-export function useRegister({ onSuccess }: Props) {
+export function useRegister({ onSuccess , skills}: Props) {
     const { pushMessage } = useSnackbar();
 
     const [type, setType] = useState<"password" | "text">("password");
@@ -45,7 +35,6 @@ export function useRegister({ onSuccess }: Props) {
             email: "",
             password: "",
             role: null,
-            skillsText: "",
         },
     });
 
@@ -59,7 +48,7 @@ export function useRegister({ onSuccess }: Props) {
             email: values.email,
             password: values.password,
             role: values.role ?? null,
-            skills: parseSkills(values.skillsText),
+            skills: skills?.length ? skills : [],
         }).unwrap();
 
         onSuccess?.();

@@ -48,7 +48,7 @@ export function UsersTable(props: Props) {
     const roleMap = useRoleMap();
     const [openId, setOpenId] = useState<string | null>(null);
     const {data: me} = useGetMeQuery();
-
+    const isAdmin = me?.role === 'ADMIN'
 
     const toggle = (id: string) => {
         setOpenId((prev) => (prev === id ? null : id));
@@ -70,7 +70,7 @@ export function UsersTable(props: Props) {
                         <SortableHeader field="updatedAt" label="Обновлён" sortBy={sortBy} sortDir={sortDir}
                                         onSort={onSort}/>
                         <TableCell align="left">Роль</TableCell>
-                        {me?.role === 'ADMIN' && (
+                        {isAdmin && (
                             <TableCell align="left">Действия</TableCell>
                         )}
                     </TableRow>
@@ -81,7 +81,7 @@ export function UsersTable(props: Props) {
 
                     {items.length === 0 ? (
                         <TableRow style={{backgroundColor: "var(--color-background-main)"}}>
-                            <TableCell colSpan={7} align="center" style={{padding: 0}}>
+                            <TableCell colSpan={isAdmin ? 8:7} align="center" style={{padding: 0}}>
                                 <Stack
                                     align="center"
                                     justify="center"
@@ -154,12 +154,13 @@ export function UsersTable(props: Props) {
                                             <TableCell className={s.tableCell} verticalAlign="middle">
                                                 {roleMap[u.role] ?? u.role}
                                             </TableCell>
-                                            {me?.role === 'ADMIN' && (
+                                            {isAdmin && (
                                                 <TableCell className={s.tableCell} verticalAlign="middle">
                                                     <Stack direction="row" gap="xl" justify="center">
-                                                        <UpdateUserIconButton user={u} canEditRole />
+                                                        <UpdateUserIconButton user={u} canEditRole/>
 
-                                                        <DeleteAccountIconButton targetUserId={u.id} userId={me.id} targetUserEmail={u.email} />
+                                                        <DeleteAccountIconButton targetUserId={u.id} userId={me.id}
+                                                                                 targetUserEmail={u.email}/>
                                                     </Stack>
                                                 </TableCell>
                                             )}

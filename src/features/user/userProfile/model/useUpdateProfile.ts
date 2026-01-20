@@ -1,18 +1,20 @@
-import { useSnackbar } from "@ozen-ui/kit/Snackbar";
-import { useUpdateUserByIdMutation } from "@/entities/user/userApi";
-import type { UpdateProfileFormValues } from "./updateProfileSchema";
+import {useSnackbar} from "@ozen-ui/kit/Snackbar";
+import {useGetMeQuery, useUpdateUserByIdMutation} from "@/entities/user/userApi";
+import type {UpdateProfileFormValues} from "./updateProfileSchema";
+import {useRefreshMutation} from "@/entities/auth/authApi.ts";
 
 type Params = {
     userId: number;
     onSuccess?: () => void;
 };
 
-export function useUpdateProfile({ userId, onSuccess }: Params) {
-    const { pushMessage } = useSnackbar();
-    const [updateUser, { isLoading }] = useUpdateUserByIdMutation();
-
+export function useUpdateProfile({userId, onSuccess}: Params) {
+    const {pushMessage} = useSnackbar();
+    const [updateUser, {isLoading}] = useUpdateUserByIdMutation();
+    const {data: me} = useGetMeQuery();
+    const [refresh] = useRefreshMutation();
     const submit = async (values: UpdateProfileFormValues) => {
-          try {
+        try {
             const data = {
                 firstName: values.firstName.trim(),
                 lastName: values.lastName?.trim() || null,
@@ -22,7 +24,11 @@ export function useUpdateProfile({ userId, onSuccess }: Params) {
                 role: values.role,
             };
 
-            await updateUser({ id: userId, data }).unwrap();
+            await updateUser({id: userId, data}).unwrap();
+
+            if (me?.id === userId) {
+                await refresh().unwrap();
+            }
 
             pushMessage({
                 title: "Успех",
@@ -40,5 +46,5 @@ export function useUpdateProfile({ userId, onSuccess }: Params) {
         }
     };
 
-    return { submit, isLoading };
+    return {submit, isLoading};
 }

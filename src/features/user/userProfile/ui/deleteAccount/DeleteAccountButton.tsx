@@ -19,7 +19,6 @@ export function DeleteAccountButton({userId}: Props) {
 
     const handleConfirmDelete = async () => {
         try {
-            await onLogout();
             await deleteUser(userId).unwrap();
             pushMessage({
                 title: "Успех",
@@ -35,6 +34,7 @@ export function DeleteAccountButton({userId}: Props) {
             });
         } finally {
             setDialogOpen(false);
+            await onLogout();
         }
     };
 

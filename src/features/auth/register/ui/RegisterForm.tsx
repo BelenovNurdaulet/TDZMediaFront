@@ -24,6 +24,7 @@ type Props = {
 };
 
 export function RegisterForm({onSuccess}: Props) {
+    const [skills, setSkills] = useState<string[]>([]);
     const {
         type,
         viewPassword,
@@ -35,8 +36,8 @@ export function RegisterForm({onSuccess}: Props) {
         isLoading,
 
         error,
-    } = useRegister({onSuccess});
-    const [skills, setSkills] = useState<string[]>([]);
+    } = useRegister({onSuccess , skills});
+
     const errorText =
         error && typeof error === "object" && "status" in error
             ? `Ошибка регистрации (${String(error.status)})`

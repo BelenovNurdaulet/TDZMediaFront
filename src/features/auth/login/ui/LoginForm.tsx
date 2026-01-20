@@ -35,6 +35,7 @@ export function LoginForm({onSuccess}: Props) {
                 <Input
                     size="s"
                     label="Почта"
+                    defaultValue={'admin1@gmail.com'}
                     {...register("email")}
                     error={!!errors.email}
                     hint={errors.email ? errors.email.message : null}
@@ -45,6 +46,7 @@ export function LoginForm({onSuccess}: Props) {
                 <Input
                     size="s"
                     label="Пароль"
+                    defaultValue={'123456'}
                     {...register("password")}
                     type={type}
                     error={!!errors.password}

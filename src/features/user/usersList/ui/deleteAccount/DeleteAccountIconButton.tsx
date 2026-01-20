@@ -25,7 +25,7 @@ export function DeleteAccountIconButton({userId , targetUserId , targetUserEmail
 
     const handleConfirmDelete = async () => {
         try {
-            await deleteUser(userId).unwrap();
+            await deleteUser(targetUserId).unwrap();
             pushMessage({
                 title: "Успех",
                 description: `Пользователь ${targetUserEmail} был удалён`,

@@ -21,7 +21,7 @@ type Props = {
 };
 
 export function UpdateProfileForm({user, canEditRole = false}: Props) {
-    const {submit, isLoading} = useUpdateProfile({userId: user.id});
+    const {submit, isLoading} = useUpdateProfile({userId: user.id });
 
     const {
         control,
