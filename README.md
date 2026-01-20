@@ -1,73 +1,76 @@
-# React + TypeScript + Vite
+# TDZ Media Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend-часть проекта **TDZ Media**.  
+Реализована на **React + TypeScript** с использованием **Redux Toolkit, RTK Query и Ozen UI**.
 
-Currently, two official plugins are available:
+Frontend взаимодействует с backend API по REST и поддерживает ролевую модель (ADMIN / USER).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📦 Технологический стек
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- TypeScript
+- Vite
+- Redux Toolkit
+- RTK Query
+- Ozen UI
+- CSS Modules
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ⚙️ Требования
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Для запуска проекта необходимо:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Node.js 18+
+- npm
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Проверка:
+```bash
+node -v
+npm -v
+```
+---
+## 🔧 Установка зависимостей
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+## 🚀 Запуск проекта
+```bash
+npm run dev
 ```
+---
+## 👥 Роли и доступ
+
+В проекте реализовано разделение интерфейса по ролям:
+
+Пользователь
+
+- Авторизация
+
+- Просмотр и редактирование профиля
+
+- Смена пароля
+
+- Удаление собственного аккаунта
+
+Администратор
+
+- Просмотр списка пользователей
+
+- Сортировка и фильтрация пользователей
+
+- Просмотр навыков пользователей
+
+- Редактирование пользователей
+
+- Удаление пользователей
+---
+
+## 🔗 Связанные репозитории
+
+Backend проекта:
+👉 https://github.com/BelenovNurdaulet/TDZMediaBack
